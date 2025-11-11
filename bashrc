@@ -119,3 +119,9 @@ if [ -z "$STY" ] && [ -z "$SCREEN_STARTED" ]; then
     export SCREEN_STARTED=1
     exec /usr/bin/screen -q -D -R
 fi
+
+# Funciones personalizadas
+
+if [ -f ~/.bash_functions ]; then
+    . ~/.bash_functions
+fi
