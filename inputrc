@@ -1,0 +1,13 @@
+# Configuración de readline (bash y cualquier programa que use readline)
+
+# Primero, cargar la configuración del sistema
+$include /etc/inputrc
+
+# Autocompletado sin distinguir mayúsculas de minúsculas
+set completion-ignore-case on
+
+# Si hay varias opciones, mostrarlas al primer Tab en vez de pitar y esperar al segundo
+set show-all-if-ambiguous on
+
+# Pitar (con sonido) cuando no hay nada que borrar, no hay coincidencias, etc.
+set bell-style audible

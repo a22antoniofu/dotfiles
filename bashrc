@@ -10,14 +10,20 @@ esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-HISTCONTROL=ignoreboth
+# erasedups: si repites un comando, se queda solo la última vez
+HISTCONTROL=ignoreboth:erasedups
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=10000
+HISTFILESIZE=20000
+
+# Guardar cada comando en el fichero de historial nada más ejecutarlo,
+# no solo al cerrar la shell (importante con screen: si se reinicia
+# la máquina con ventanas abiertas, no se pierde lo tecleado)
+PROMPT_COMMAND="history -a${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -25,7 +31,7 @@ shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
-#shopt -s globstar
+shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
 #[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -112,16 +118,21 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Ejecutar screen
-# exec /usr/bin/screen -q /usr/bin/bash -l
-# En tu .bashrc
-if [ -z "$STY" ] && [ -z "$SCREEN_STARTED" ]; then
-    export SCREEN_STARTED=1
-    exec /usr/bin/screen -q -D -R
-fi
-
 # Funciones personalizadas
-
 if [ -f ~/.bash_functions ]; then
     . ~/.bash_functions
+fi
+
+# Arrancar dentro de screen (al final, para que sea lo último que pase).
+# -xRR: se engancha a la sesión que haya, aunque ya esté abierta en otra
+#       terminal (las dos ven lo mismo); si no hay ninguna, crea una.
+# Solo si:
+#   - no estamos ya dentro de screen ($STY vacío)
+#   - screen está instalado
+#   - la entrada es una terminal de verdad
+#   - no es una terminal de VS Code / Codespaces (screen ahí estorba,
+#     y VS Code lanza bash interactivo por debajo para leer el entorno)
+if [ -z "$STY" ] && command -v screen >/dev/null && [ -t 0 ] \
+   && [ "$TERM_PROGRAM" != vscode ] && [ -z "$VSCODE_RESOLVING_ENVIRONMENT" ]; then
+    exec screen -q -xRR
 fi
