@@ -1,0 +1,29 @@
+# ~/.screenrc — común a todas las máquinas (repo a22antoniofu/dotfiles)
+# Lo particular de cada máquina va en ~/.screenrc.local (cargado al final).
+
+# --- Lo básico ---
+startup_message off        # adiós a la pantalla de bienvenida
+autodetach on              # si se cae el SSH, la sesión sigue viva
+defutf8 on                 # UTF-8 por defecto (tildes y eñes sin dramas)
+defscrollback 10000        # historial generoso por ventana
+altscreen on               # al salir de vim/less vuelve lo que había antes
+term screen-256color
+shell -$SHELL              # shell de login, para que cargue el .bashrc
+
+# --- Avisos ---
+vbell off                  # nada de parpadeos visuales
+bell_msg "Campana en ventana %n ^G"
+activity "Actividad en ventana %n ^G"
+msgwait 4                  # los mensajes duran 4 s, da tiempo a que JAWS los lea
+
+# --- Sin barra de estado ---
+# Para ver las ventanas cuando haga falta: Ctrl-a w (lista rápida)
+# o Ctrl-a " (lista navegable).
+
+# --- Atajos ---
+bind r source $HOME/.screenrc   # Ctrl-a r recarga la config
+bind k kill                     # Ctrl-a k cierra la ventana actual
+
+# --- Lo de cada máquina (logs, otro prefijo con "escape ^Tt", etc.) ---
+# install.sh lo crea vacío para que screen no proteste si no existe.
+source $HOME/.screenrc.local

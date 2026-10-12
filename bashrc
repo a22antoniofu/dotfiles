@@ -134,5 +134,6 @@ fi
 #     y VS Code lanza bash interactivo por debajo para leer el entorno)
 if [ -z "$STY" ] && command -v screen >/dev/null && [ -t 0 ] \
    && [ "$TERM_PROGRAM" != vscode ] && [ -z "$VSCODE_RESOLVING_ENVIRONMENT" ]; then
-    exec screen -q -xRR
+    exec screen -q -xRR && exit
+    echo "Ojo: screen no ha arrancado (código $?), estás en bash normal."
 fi

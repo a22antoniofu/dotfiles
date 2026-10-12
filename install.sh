@@ -25,5 +25,6 @@ enlaza bashrc         .bashrc
 enlaza bash_aliases   .bash_aliases
 enlaza bash_functions .bash_functions
 enlaza inputrc        .inputrc
+enlaza screenrc        .screenrc
 
 echo "Listo. Abre una terminal nueva o ejecuta: exec bash"
